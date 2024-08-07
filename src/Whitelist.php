@@ -1,10 +1,13 @@
 <?php
+
+namespace src;
 class Whitelist{
     public function getUserDetails($user = ""){
         
         $httpCode = "";
 
         if($user == ""){
+            echo 'Please input your users name.';
             $user = rtrim(fgets(STDIN));
         }
         
@@ -15,14 +18,18 @@ class Whitelist{
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
         
-        
-        
-    
-        
+
         // Execute the API call (get request) to Mojang to check if valid user.
-        
+
         $resp = curl_exec($ch);
-        
+        $error = curl_error($ch);
+
+
+        if($error){
+            echo 'Curl returned error: ' . $error . "\n Please ensure your PHP / Curl is setup properly.";
+            exit();
+        }
+
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         if($httpCode == 404){
             echo "Invalid User! Please try again. \n\n";
@@ -32,17 +39,18 @@ class Whitelist{
     
         
         if($httpCode == 200){
+
             return json_decode($resp);
         }
     }
     
     
-    public function deleteUserFromWhitelist($user){
+    public function deleteUserFromWhitelist($user, $whiteListPath = 'whitelist.json'){
         if(!file_exists("whitelist.json")){
             echo "A whitelist needs to be provided to delete a user.";
             return false;
         }
-        $currentWhitelist = file_get_contents("whitelist.json");
+        $currentWhitelist = file_get_contents($whiteListPath);
         $currentWhitelistDecoded = json_decode($currentWhitelist, true);
         for($x = 0; $x < count($currentWhitelistDecoded); $x++){
             
@@ -55,14 +63,14 @@ class Whitelist{
     
         $newWhitelistJson = json_encode($currentWhitelistDecoded, JSON_PRETTY_PRINT);
     
-        file_put_contents("whitelist.json", $newWhitelistJson);
+        file_put_contents($whiteListPath, $newWhitelistJson);
         return true;
     
     }
-    public function addUserToWhitelist($user){
+    public function addUserToWhitelist($user, $whiteListPath = 'whitelist.json'){
     
     
-        if(!file_exists("whitelist.json")){
+        if(!file_exists($whiteListPath)){
             //Add the user to the Whitelist (CODE FOR IF WHITELIST DOESN'T EXIST)
             $newWhitelistArray = Array(
             "0" => Array(
@@ -75,11 +83,11 @@ class Whitelist{
         
             //Finally, create the file if it doesn't exist
         
-            file_put_contents("whitelist.json", $newWhitelistJson);
+            file_put_contents($whiteListPath, $newWhitelistJson);
             return true;
         }
         else{
-            $currentWhitelist = file_get_contents("whitelist.json");
+            $currentWhitelist = file_get_contents($whiteListPath);
             $currentWhitelistDecoded = json_decode($currentWhitelist, true);
             
             //Iterate through the current Allow list and see for duplicates.
@@ -102,7 +110,7 @@ class Whitelist{
             
                 $newWhitelistJson = json_encode($currentWhitelistDecoded, JSON_PRETTY_PRINT);
             
-                file_put_contents("whitelist.json", $newWhitelistJson);
+                file_put_contents($whiteListPath, $newWhitelistJson);
                 return true;
         }
         
