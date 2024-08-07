@@ -39,8 +39,8 @@ After choosing from the options, as seen below, it will continue forward until y
 
 ### Paramaters
 
--  ```-username=""``` | Specify users name immediately instead of within script. Ex: php .\src\whiteListScript.php username="13011brett"
-- ```-wl=""``` |  Specify whitelist location, can be done within CLI as well when using script. Ex: php .\src\whiteListScript.php -wl="C:\users\13011\desktop\minecraft_server\whitelist.json"
+-  ```username=""``` | Specify users name immediately instead of within script. Ex: php .\src\whiteListScript.php username="13011brett"
+- ```wl=""``` |  Specify whitelist location, can be done within CLI as well when using script. Ex: php .\src\whiteListScript.php -wl="C:\users\13011\desktop\minecraft_server\whitelist.json"
 - ```-add | -a``` - Allows for immediate adding of user to whitelist (be sure to specify the whitelist). php .\src\whiteListScript.php username="13011brett" -a -wl="C:\users\13011\desktop\minecraft_server\whitelist.json"
 - ```-remove | -r``` Allows for immediate removal of user from whitelist (be sure to specify the whitelist). php .\src\whiteListScript.php username="13011brett" -a -wl="C:\users\13011\desktop\minecraft_server\whitelist.json"
 - ```-quick | -q``` Makes the script quit after completion (Note: Only works if you specify the parameters above).
