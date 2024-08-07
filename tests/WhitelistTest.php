@@ -10,6 +10,7 @@ class WhitelistTest extends TestCase {
     public function testQueryMojangApiSuccess() {
         
         $whitelist = new Whitelist;
+        if(file_exists('whitelist.json')) unlink('whitelist.json');
         $user = $whitelist->getUserDetails("Duality13011");
         $this->assertEquals(0, (empty($user)));
         
