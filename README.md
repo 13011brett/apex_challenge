@@ -14,14 +14,14 @@
 
 
 ## Dependencies (Windows)
-- Composer (https://getcomposer.org/download/ used v2.7.7)
-- PHP 8.3.8 (https://windows.php.net/download#php-8.3)
+- _PHP 8.3.8_ (https://windows.php.net/download#php-8.3)
+- _Composer_ (requires PHP as well) (https://getcomposer.org/download/ used v2.7.7)
 
 ## Usability / Full Installation
 
-If you have Composer installed, and are running into issues, I recommend installing the Composer components, by being in the root directory and running _composer install._ This generally is only needed if running Unit Tests.
+If you have Composer installed, and are running into issues, I recommend installing the Composer components, by being in the root directory and running ```composer install```. This generally is only needed if running Unit Tests.
 
-To use the script, you will simply run it with PHP, such as: php .\src\whiteListScript.php -- This is ran from the root of the Git directly. The whitelist generation will always be done in the directory where you ran the program from, unless specified.
+To use the script, you will simply run it with PHP, such as: ```php .\src\whiteListScript.php``` -- This is ran from the root of the Git directly. The whitelist generation will always be done in the directory where you ran the program from, unless specified.
 
 When running with no paramaters, you will be prompted to enter in a username, if adding, or UUID, if you are choosing to remove a user. It will also prompt you accordingly that a Whitelist will be defaulted, and if not existing, created in the root directory of where you are executing.
 
@@ -39,11 +39,11 @@ After choosing from the options, as seen below, it will continue forward until y
 
 ### Paramaters
 
--  -username | Specify users name immediately instead of within script. Ex: php .\src\whiteListScript.php username="13011brett"
-- -wl |  Specify whitelist location, can be done within CLI as well when using script. Ex: php .\src\whiteListScript.php -wl="C:\users\13011\desktop\minecraft_server\whitelist.json"
-- -add | -a - Allows for immediate adding of user to whitelist (be sure to specify the whitelist). php .\src\whiteListScript.php username="13011brett" -a -wl="C:\users\13011\desktop\minecraft_server\whitelist.json"
-- -remove | -r Allows for immediate removal of user from whitelist (be sure to specify the whitelist). php .\src\whiteListScript.php username="13011brett" -a -wl="C:\users\13011\desktop\minecraft_server\whitelist.json"
-- -quick | -q Makes the script quit after completion (Note: Only works if you specify the parameters above).
+-  ```-username=""``` | Specify users name immediately instead of within script. Ex: php .\src\whiteListScript.php username="13011brett"
+- ```-wl=""``` |  Specify whitelist location, can be done within CLI as well when using script. Ex: php .\src\whiteListScript.php -wl="C:\users\13011\desktop\minecraft_server\whitelist.json"
+- ```-add | -a``` - Allows for immediate adding of user to whitelist (be sure to specify the whitelist). php .\src\whiteListScript.php username="13011brett" -a -wl="C:\users\13011\desktop\minecraft_server\whitelist.json"
+- ```-remove | -r``` Allows for immediate removal of user from whitelist (be sure to specify the whitelist). php .\src\whiteListScript.php username="13011brett" -a -wl="C:\users\13011\desktop\minecraft_server\whitelist.json"
+- ```-quick | -q``` Makes the script quit after completion (Note: Only works if you specify the parameters above).
 
 
 ## Unit Tests
