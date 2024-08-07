@@ -1,7 +1,18 @@
 <?php
 
 namespace src;
+
+//Class could be more generalized in the future to be a whitelist class for all games. Currently only for Minecraft.
 class Whitelist{
+
+    public $WhiteListPath = "whitelist.json";
+    public function __construct($whiteListPath = "whitelist.json")
+    {
+        $this->WhiteListPath = $whiteListPath;
+
+    }
+
+
     public function getUserDetails($user = ""){
         
         $httpCode = "";
@@ -32,7 +43,11 @@ class Whitelist{
 
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         if($httpCode == 404){
-            echo "Invalid User! Please try again. \n\n";
+            print "Invalid User! Please try again. \n\n";
+            return 0;
+        }
+        if($httpCode == 500){
+            print "Internal server error! You may be rate limited for the next 10 minutes.. \n\n";
             return 0;
         }
         curl_close($ch);
@@ -43,51 +58,92 @@ class Whitelist{
             return json_decode($resp);
         }
     }
+    public function queryWhitelistForUser($user)
+    {
+        $currentWhitelist = file_get_contents($this->WhiteListPath);
+        $currentWhitelistDecoded = json_decode($currentWhitelist, true);
+
+        //Iterate through the current Allow list and see for duplicates.
+        for ($x = 0; $x < count($currentWhitelistDecoded); $x++) {
+
+            if ($user->id == $currentWhitelistDecoded[$x]['uuid']) {
+                return true;
+            }
+        }
+        return false;
+    }
     
-    
-    public function deleteUserFromWhitelist($user, $whiteListPath = 'whitelist.json'){
-        if(!file_exists("whitelist.json")){
+    public function deleteUserFromWhitelist($user){
+
+        if(!is_writable($this->WhiteListPath)){
+            print "A whitelist needs to be writable. Please check your permissions and ensure this file is not currently in use.";
+            return false;
+        }
+
+        if(!file_exists($this->WhiteListPath)){
             echo "A whitelist needs to be provided to delete a user.";
             return false;
         }
-        $currentWhitelist = file_get_contents($whiteListPath);
+
+
+        $currentWhitelist = file_get_contents($this->WhiteListPath);
         $currentWhitelistDecoded = json_decode($currentWhitelist, true);
         for($x = 0; $x < count($currentWhitelistDecoded); $x++){
             
-            if($user->id == $currentWhitelistDecoded[$x]['uuid'] || $user->name == $currentWhitelistDecoded[$x]['name']){
+            if($user == $currentWhitelistDecoded[$x]['uuid'] || $user == $currentWhitelistDecoded[$x]['name']){
+                print_r($currentWhitelistDecoded[$x]['name'] . " has been removed!\n");
                 unset( $currentWhitelistDecoded[$x] );
-                echo "$user->name has been removed!";
+                $newWhiteList = array_values($currentWhitelistDecoded);
+                $newWhitelistJson = json_encode($newWhiteList, JSON_PRETTY_PRINT);
+
+                file_put_contents($this->WhiteListPath, $newWhitelistJson);
+                return true;
+            }
+            else{
+                print "$user could not be found. Please try again. \n";
+                return false;
             }
         }
     
     
-        $newWhitelistJson = json_encode($currentWhitelistDecoded, JSON_PRETTY_PRINT);
-    
-        file_put_contents($whiteListPath, $newWhitelistJson);
-        return true;
+
     
     }
-    public function addUserToWhitelist($user, $whiteListPath = 'whitelist.json'){
-    
-    
-        if(!file_exists($whiteListPath)){
+    public function addUserToWhitelist($user){
+
+        if(!$user->id || !$user->name){
+            print "Invalid user! Please try again. \n\n";
+            return false;
+            }
+
+        if(!file_exists($this->WhiteListPath)){
             //Add the user to the Whitelist (CODE FOR IF WHITELIST DOESN'T EXIST)
+
             $newWhitelistArray = Array(
-            "0" => Array(
-                "uuid" => $user->id,
-                "name" => $user->name
+                "0" => Array(
+                    "uuid" => $user->id,
+                    "name" => $user->name
                 )
             );
-        
+
             $newWhitelistJson = json_encode ($newWhitelistArray, JSON_PRETTY_PRINT);
-        
+
             //Finally, create the file if it doesn't exist
-        
-            file_put_contents($whiteListPath, $newWhitelistJson);
+
+            file_put_contents($this->WhiteListPath, $newWhitelistJson);
+
+            print ("Whitelist created and $user->name added!\n");
             return true;
         }
+
+        if(!is_writable($this->WhiteListPath)){
+            print "A whitelist needs to be writable. Please check your permissions and ensure this file is not currently in use.";
+            return false;
+        }
+    
+
         else{
-            $currentWhitelist = file_get_contents($whiteListPath);
+            $currentWhitelist = file_get_contents($this->WhiteListPath);
             $currentWhitelistDecoded = json_decode($currentWhitelist, true);
             
             //Iterate through the current Allow list and see for duplicates.
@@ -99,8 +155,6 @@ class Whitelist{
                 }
             }
             
-            
-            
             $newUserAddition =
                 Array(
                     "uuid" => $user->id,
@@ -110,7 +164,8 @@ class Whitelist{
             
                 $newWhitelistJson = json_encode($currentWhitelistDecoded, JSON_PRETTY_PRINT);
             
-                file_put_contents($whiteListPath, $newWhitelistJson);
+                file_put_contents($this->WhiteListPath, $newWhitelistJson);
+                print("$user->name has been allowed to join the server!\n");
                 return true;
         }
         
