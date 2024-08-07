@@ -35,13 +35,17 @@ class Whitelist{
         $resp = curl_exec($ch);
         $error = curl_error($ch);
 
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        //Close the Curl Connection before exiting.
+        curl_close($ch);
 
         if($error){
             echo 'Curl returned error: ' . $error . "\n Please ensure your PHP / Curl is setup properly.";
             exit();
         }
 
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
         if($httpCode == 404){
             print "Invalid User! Please try again. \n\n";
             return 0;
@@ -50,9 +54,7 @@ class Whitelist{
             print "Internal server error! You may be rate limited for the next 10 minutes.. \n\n";
             return 0;
         }
-        curl_close($ch);
-    
-        
+
         if($httpCode == 200){
 
             return json_decode($resp);
@@ -99,11 +101,10 @@ class Whitelist{
                 file_put_contents($this->WhiteListPath, $newWhitelistJson);
                 return true;
             }
-            else{
-                print "$user could not be found. Please try again. \n";
-                return false;
-            }
+
         }
+        print "$user could not be found. Please try again. \n";
+        return false;
     
     
 

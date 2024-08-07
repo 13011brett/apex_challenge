@@ -84,7 +84,7 @@ while($input != 5){
         continue;
     }
     if($input == 4){
-        print "Please enter the new whitelist location. For Example: C:\\Users\\Brett\\Desktop\\Mine_craft_server would be the location you have the whitelist.json file. \n";
+        print "Please enter the new whitelist location. Example: C:\\Users\\Brett\\Desktop\\Minecraft_server would be what you would input here if the proper location. \n";
         $whitelist->WhiteListPath = readline();
         $whitelist->WhiteListPath .= "\\whitelist.json";
         continue;
