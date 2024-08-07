@@ -21,7 +21,7 @@
 
 If you have Composer installed, and are running into issues, I recommend installing the Composer components, by being in the root directory and running ```composer install```. This generally is only needed if running Unit Tests.
 
-To use the script, you will simply run it with PHP, such as: ```php .\src\whiteListScript.php``` -- This is ran from the root of the Git directly. The whitelist generation will always be done in the directory where you ran the program from, unless specified.
+To use the script, you will simply run it with PHP, such as: ```php .\src\whiteListScript.php``` -- This is ran from the root of the main directory. The whitelist generation will always be done in the directory where you ran the program from, so in this case, the root directory ```apex_challenge```, unless specified.
 
 When running with no paramaters, you will be prompted to enter in a username, if adding, or UUID, if you are choosing to remove a user. It will also prompt you accordingly that a Whitelist will be defaulted, and if not existing, created in the root directory of where you are executing.
 
