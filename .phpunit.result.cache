@@ -1,0 +1,1 @@
+{"version":1,"defects":{"Warning":6,"WhitelistTest::testQueryMojangApiSuccess":3},"times":{"Warning":0.003,"WhitelistTest::testQueryMojangApiSuccess":0.46,"WhitelistTest::testQueryMojangApiFailure":0.464}}
