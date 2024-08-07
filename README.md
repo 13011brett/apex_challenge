@@ -4,6 +4,7 @@
 - Develop a script that can automatically generate a whitelist, utilizing the Mojang API, to generate a UUID from any given valid username. 
 - Store all players within a JSON file, which will be an array of different users.
 - Ability to remove said user, given a username OR UUID (API only allows queries via username, so additions will be only via in-game name).
+- (Personal Todo) Integrate with a web portal, using a Laravel scaffolding stack.
 
 ## Design a Plan:
   -   Use Curl to initially grab information from the Mojang API.
