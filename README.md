@@ -48,6 +48,6 @@ After choosing from the options, as seen below, it will continue forward until y
 
 ## Unit Tests
 
-All unit tests are used within PHPUnit, and are expected to run together. To run them, you can either automatically do it via PHPStorm or any IDE of your choice, or manually via the terminal. ex from root directory: ./vendor/bin/phpunit
+All unit tests are used within PHPUnit, and are expected to run together. To run them, you can either automatically do it via PHPStorm or any IDE of your choice, or manually via the terminal. ex from root directory: ```./vendor/bin/phpunit```
 
 !! Do note, that it will remove any Whitelist that is in the current directory you are working within. This is by design, to fully test its capabilites of creating the JSON every run.
